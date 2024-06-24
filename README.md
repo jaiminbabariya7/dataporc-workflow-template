@@ -20,24 +20,3 @@ This repository includes an example workflow template for Dataproc.
 ### Cloud Build Configuration
 
 The repository is configured with a Cloud Build trigger to automatically import the workflow template into Dataproc whenever changes are pushed to the main branch.
-
-#### cloudbuild.yaml
-
-```yaml
-steps:
-- name: 'gcr.io/cloud-builders/git'
-  args: ['clone', '--single-branch', '--depth=1', 'https://github.com/$GITHUB_USERNAME/$REPO_NAME.git', 'src']
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  args: ['dataproc', 'workflow-templates', 'import', 'src/$TEMPLATE_FILE']
-
-substitutions:
-  _GITHUB_USERNAME: 'jaiminbabariya7'
-  _REPO_NAME: 'dataproc-workflow-template'
-  _TEMPLATE_FILE: 'example-workflow-template.yaml'
-
-trigger:
-  github:
-    owner: $_GITHUB_USERNAME
-    name: $_REPO_NAME
-    push:
-      branch: '^main$'
