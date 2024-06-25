@@ -1,0 +1,13 @@
+steps:
+- name: 'maven:3.6.3-jdk-8'
+  entrypoint: 'mvn'
+  args: ['clean', 'package']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['dataproc', 'clusters', 'create', 'workflow-cluster', '--region', 'northamerica-northeast2', '--single-node']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['dataproc', 'jobs', 'submit', 'hadoop', '--cluster=workflow-cluster', '--region=northamerica-northeast2', '--jar=target/wordcount-1.0-SNAPSHOT.jar', '--', 'gs://workflow_bucket/input_data/', 'gs://workflow_bucket/output_data/']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['dataproc', 'clusters', 'delete', 'workflow-cluster', '--region', 'northamerica-northeast2', '--quiet']
