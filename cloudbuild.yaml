@@ -11,3 +11,5 @@ steps:
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['dataproc', 'clusters', 'delete', 'workflow-cluster', '--region', 'northamerica-northeast2', '--quiet']
+
+serviceAccount: cloud-build-sa@testproject19980710-426203.iam.gserviceaccount.com?uid=111311833071809310794
