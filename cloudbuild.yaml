@@ -3,6 +3,12 @@ steps:
   entrypoint: 'mvn'
   args: ['clean', 'package']
 
+- name: 'gcr.io/cloud-builders/gsutil'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - 'gsutil cp gs://workflow_buckt/input_data/input.txt hdfs:///input/input.txt'
+    
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
     - 'dataproc'
