@@ -25,7 +25,7 @@ steps:
     - 'jobs'
     - 'submit'
     - 'hadoop'
-    - '--cluster=${_CLUSTER_NAME}'  # Use the correct substitution format
+    - '--cluster=${_CLUSTER_NAME}'  # Correct substitution format
     - '--region=northamerica-northeast2'
     - '--jar=gs://workflow_buckt/target/wordcount-1.0-SNAPSHOT.jar'
     - '--class=com.example.WordCount'
