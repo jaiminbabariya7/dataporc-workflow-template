@@ -9,15 +9,15 @@ steps:
     - '-c'
     - 'gsutil cp gs://workflow_buckt/input_data/input.txt .'
     
-- name: 'gcr.io/cloud-builders/gcloud'
-  args:
-    - 'dataproc'
-    - 'clusters'
-    - 'create'
-    - '${_CLUSTER_NAME}'
-    - '--region'
-    - 'northamerica-northeast2'
-    - '--single-node'
+#- name: 'gcr.io/cloud-builders/gcloud'
+  #args:
+    #- 'dataproc'
+    #- 'clusters'
+    #- 'create'
+    #- '${_CLUSTER_NAME}'
+    #- '--region'
+    #- 'northamerica-northeast2'
+    #- '--single-node'
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
