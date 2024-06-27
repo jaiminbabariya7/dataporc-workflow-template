@@ -5,7 +5,6 @@ steps:
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['dataproc', 'clusters', 'create', 'workflow-cluster', '--region', 'northamerica-northeast2', '--single-node']
-  ignoreExitStatus: true
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['dataproc', 'jobs', 'submit', 'hadoop', '--cluster=workflow-cluster', '--region=northamerica-northeast2', '--jar=target/wordcount-1.0-SNAPSHOT.jar', '--', 'gs://workflow_buckt/input_data/', 'gs://workflow_buckt/output_data/']
