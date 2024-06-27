@@ -25,7 +25,8 @@ steps:
     - 'jobs'
     - 'submit'
     - 'hadoop'
-    - '--cluster=${_CLUSTER_NAME}'  # Correct substitution format
+    #- '--cluster=${_CLUSTER_NAME}'  # Correct substitution format
+    - '--cluster=workflow-cluster'
     - '--region=northamerica-northeast2'
     - '--jar=gs://workflow_buckt/target/wordcount-1.0-SNAPSHOT.jar'
     - '--class=com.example.WordCount'
@@ -40,8 +41,8 @@ steps:
     - |
       gcloud dataproc clusters delete '${_CLUSTER_NAME}' --region='northamerica-northeast2' --quiet
 
-substitutions:
-  _CLUSTER_NAME: 'workflow-cluster'  # Define the substitution here
+#substitutions:
+  #_CLUSTER_NAME: 'workflow-cluster'  # Define the substitution here
 
 options:
   logging: CLOUD_LOGGING_ONLY
