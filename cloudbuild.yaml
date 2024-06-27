@@ -4,27 +4,37 @@ steps:
   args: ['clean', 'package']
 
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['dataproc', 'clusters', 'create', 'workflow-cluster', '--region', 'northamerica-northeast2', '--single-node']
+  args:
+    - 'dataproc'
+    - 'clusters'
+    - 'create'
+    - '${_CLUSTER_NAME}'
+    - '--region'
+    - 'northamerica-northeast2'
+    - '--single-node'
 
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['dataproc', 'jobs', 'submit', 'hadoop', '--cluster=workflow-cluster', '--region=northamerica-northeast2', '--jar=target/wordcount-1.0-SNAPSHOT.jar', '--', 'gs://workflow_buckt/input_data/', 'gs://workflow_buckt/output_data/']
+  args:
+    - 'dataproc'
+    - 'jobs'
+    - 'submit'
+    - 'hadoop'
+    - '--cluster=${_CLUSTER_NAME}'  # Use the correct substitution format
+    - '--region=northamerica-northeast2'
+    - '--jar=target/wordcount-1.0-SNAPSHOT.jar'
+    - '--'
+    - 'gs://workflow_buckt/input_data/'
+    - 'gs://workflow_buckt/output_data/'
 
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'sh'
   args:
     - -c
     - |
-      CLUSTER_NAME="workflow-cluster"
-      REGION="northamerica-northeast2"
-      JAR_PATH="target/wordcount-1.0-SNAPSHOT.jar"
-      INPUT_PATH="gs://workflow_buckt/input_data/"
-      OUTPUT_PATH="gs://workflow_buckt/output_data/"
+      gcloud dataproc clusters delete '${_CLUSTER_NAME}' --region='northamerica-northeast2' --quiet
 
-      gcloud dataproc jobs submit hadoop --cluster="$CLUSTER_NAME" --region="$REGION" \
-        --class=WordCount --jars="$JAR_PATH" == "$INPUT_PATH" "$OUTPUT_PATH"
-
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['dataproc', 'clusters', 'delete', 'workflow-cluster', '--region=northamerica-northeast2', '--quiet']
+substitutions:
+  _CLUSTER_NAME: 'workflow-cluster'  # Define the substitution here
 
 options:
   logging: CLOUD_LOGGING_ONLY
