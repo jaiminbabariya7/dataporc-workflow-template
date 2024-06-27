@@ -27,7 +27,7 @@ steps:
     - 'hadoop'
     - '--cluster=${_CLUSTER_NAME}'  # Use the correct substitution format
     - '--region=northamerica-northeast2'
-    - '--jar=target/wordcount-1.0-SNAPSHOT.jar'
+    - '--jar=gs://workflow_buckt/target/wordcount-1.0-SNAPSHOT.jar'
     - '--'
     - 'input.txt'
     - 'gs://workflow_buckt/output_data/'
