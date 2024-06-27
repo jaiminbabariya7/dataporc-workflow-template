@@ -23,7 +23,7 @@ steps:
     - '--region=northamerica-northeast2'
     - '--jar=target/wordcount-1.0-SNAPSHOT.jar'
     - '--'
-    - 'gs://workflow_buckt/input_data/'
+    - 'gs://workflow_buckt/input_data/input.txt'
     - 'gs://workflow_buckt/output_data/'
 
 - name: 'gcr.io/cloud-builders/gcloud'
