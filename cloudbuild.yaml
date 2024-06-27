@@ -7,7 +7,7 @@ steps:
   entrypoint: 'sh'
   args:
     - '-c'
-    - 'gsutil cp gs://workflow_buckt/input_data/input.txt hdfs:///input/input.txt'
+    - 'gsutil cp gs://workflow_buckt/input_data/input.txt .'
     
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
@@ -29,8 +29,8 @@ steps:
     - '--region=northamerica-northeast2'
     - '--jar=target/wordcount-1.0-SNAPSHOT.jar'
     - '--'
-    - 'hdfs:///input/input.txt'
-    - 'hdfs:///output/'
+    - 'input.txt'
+    - 'gs://workflow_buckt/output_data/'
 
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'sh'
