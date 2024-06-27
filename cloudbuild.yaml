@@ -29,8 +29,8 @@ steps:
     - '--region=northamerica-northeast2'
     - '--jar=target/wordcount-1.0-SNAPSHOT.jar'
     - '--'
-    - 'gs://workflow_buckt/input_data/input.txt'
-    - 'gs://workflow_buckt/output_data/'
+    - 'hdfs:///input/input.txt'
+    - 'hdfs:///output/'
 
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'sh'
