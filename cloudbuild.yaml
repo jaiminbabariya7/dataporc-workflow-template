@@ -11,3 +11,6 @@ steps:
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['dataproc', 'clusters', 'delete', 'workflow-cluster', '--region', 'northamerica-northeast2', '--quiet']
+
+options:
+  logging: CLOUD_LOGGING_ONLY
