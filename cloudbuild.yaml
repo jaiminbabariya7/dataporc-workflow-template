@@ -10,7 +10,7 @@ steps:
       - '-c'
       - |
         gcloud dataproc jobs submit pyspark dataproc-workflow-template/wordcount.py \
-          --cluster=workflow_cluster \
+          --cluster=workflow-cluster \
           --region=northamerica-northeast2 \
           -- gs://workflow_buckt/input_data/input.txt gs://workflow_buckt/output/
 
