@@ -4,11 +4,11 @@ steps:
     args: ['clone', 'https://github.com/jaiminbabariya7/dataproc-workflow-template.git']
 
   # Step-2: List the contents of the cloned repository to verify cloning
-  - name: 'alpine'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - 'ls -R /workspace/dataproc-workflow-template'
+  #- name: 'alpine'
+    #entrypoint: 'sh'
+    #args:
+      #- '-c'
+      #- 'ls -R /workspace/dataproc-workflow-template'
 
   # Step-3: Create Dataproc cluster
   #- name: 'gcr.io/cloud-builders/gcloud
