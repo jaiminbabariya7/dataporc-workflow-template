@@ -11,7 +11,7 @@ steps:
       - |
         INPUT_BUCKET=$_INPUT_BUCKET
         INPUT_PATH=input.txt
-        OUTPUT_BUCKET=$_OUTPUT_BUCKET
+        OUTPUT_BUCKET=$_INPUT_BUCKET
         OUTPUT_PATH=output.txt
         
         gcloud dataproc jobs submit pyspark dataproc-workflow-template/wordcount.py \
@@ -20,7 +20,6 @@ steps:
           -- gs://${INPUT_BUCKET}/${INPUT_PATH} gs://${OUTPUT_BUCKET}/${OUTPUT_PATH}
     substitutions:
     _INPUT_BUCKET: workflow_buckt
-    _OUTPUT_BUCKET: workflow_buckt
 
 options:
   logging: CLOUD_LOGGING_ONLY
