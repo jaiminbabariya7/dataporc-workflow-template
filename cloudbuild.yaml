@@ -30,7 +30,7 @@ steps:
       - 'hadoop'
       - '--cluster=workflow-cluster'
       - '--region=northamerica-northeast2'
-      - '--jar=gs://workflow_buckt/target/wordcount-1.0-SNAPSHOT.jar'
+      - '--jar=gs://workflow_buckt/target/hadoop-streaming.jar'
       - '--'
       - '-files=dataproc-workflow-template/wordcount.py'
       - '-mapper=python3 wordcount.py mapper'
