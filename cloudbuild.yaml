@@ -13,3 +13,6 @@ steps:
           --cluster=workflow_cluster \
           --region=northamerica-northeast2 \
           -- gs://workflow_buckt/input_data/input.txt gs://workflow_buckt/output/
+
+options:
+  logging: CLOUD_LOGGING_ONLY
