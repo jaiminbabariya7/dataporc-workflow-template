@@ -30,18 +30,21 @@ def write_to_gcs(output_path, word_counts):
     blob.upload_from_string(output_data)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python wordcount.py <input_gcs_path> <output_gcs_path>")
-        sys.exit(1)
+    bucket_name = 'workflow_buckt'
+    input_file = 'input_data/input.txt'
+    output_file = 'output_data/output.txt'
 
-    input_gcs_path = sys.argv[1]
-    output_gcs_path = sys.argv[2]
+    # Read input data from GCS
+    input_data = read_from_gcs(bucket_name, input_file)
 
-    # Read data from GCS
-    input_data = read_from_gcs(input_gcs_path)
+    # Map function (word count)
+    word_counts = [mapper(input_data)]
 
-    # Perform word count
-    word_counts = word_count_mapper(input_data)
+    # Reduce function (combine word counts)
+    final_word_count = reducer(word_counts)
 
-    # Write results to GCS
-    write_to_gcs(output_gcs_path, word_counts)
+    # Convert word count dictionary to string format
+    output_content = '\n'.join(f'{word}\t{count}' for word, count in final_word_count.items())
+
+    # Write output data to GCS
+    write_to_gcs(bucket_name, output_file, output_content)
