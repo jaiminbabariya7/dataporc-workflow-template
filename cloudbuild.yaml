@@ -40,3 +40,6 @@ steps:
       - 'workflow-cluster'
       - '--region=northamerica-northeast2'
       - '--quiet'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
