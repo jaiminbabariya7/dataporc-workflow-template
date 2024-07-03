@@ -1,57 +1,15 @@
 steps:
-  # Step-1: Clone the GitHub repository
+  # Step to clone the GitHub repository
   - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://github.com/jaiminbabariya7/dataproc-workflow-template.git']
+    args: ['clone', 'https://https://github.com/jaiminbabariya7/dataproc-workflow-template.git']
 
-  # Step-2: List the contents of the cloned repository to verify cloning
-  #- name: 'alpine'
-    #entrypoint: 'sh'
-    #args:
-      #- '-c'
-      #- 'ls -R /workspace/dataproc-workflow-template'
-
-  # Step-3: Create Dataproc cluster
-  #- name: 'gcr.io/cloud-builders/gcloud
-    #args:
-        #- 'dataproc'
-        #- 'clusters'
-        #- 'create'
-        #- 'workflow-cluster'
-        #- '--region'
-        #- 'northamerica-northeast2'
-        #- '--single-node'
-
-  # Step-4: Submit Hadoop job to the cluster
+  # Step to submit the Dataproc job
   - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
     args:
-      - 'dataproc'
-      - 'jobs'
-      - 'submit'
-      - 'hadoop'
-      - '--cluster=workflow-cluster'
-      - '--region=northamerica-northeast2'
-      - '--mapper'
-      - 'python3'
-      - '--'
-      - 'gs://workflow_buckt/wordcount.py'
-      - '--reducer'
-      - 'python3'
-      - '--'
-      - 'gs://workflow_buckt/wordcount.py'
-      - '-input'
-      - 'gs://workflow_buckt/input/input.txt'
-      - '-output'
-      - 'gs://workflow_buckt/output_data/'
-
-  # Step-5: Delete the Dataproc cluster
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'dataproc'
-      - 'clusters'
-      - 'delete'
-      - 'workflow-cluster'
-      - '--region=northamerica-northeast2'
-      - '--quiet'
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+      - '-c'
+      - |
+        gcloud dataproc jobs submit pyspark dataproc-workflow-template/wordcount.py \
+          --cluster=workflow_cluster \
+          --region=northamerica-northeast2 \
+          -- gs://workflow_buckt/input_data/input.txt gs://workflow_buckt/output/
