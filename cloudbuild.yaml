@@ -1,13 +1,4 @@
 steps:
-- name: 'maven:3.6.3-jdk-8'
-  entrypoint: 'mvn'
-  args: ['clean', 'package']
-
-- name: 'gcr.io/cloud-builders/gsutil'
-  entrypoint: 'sh'
-  args:
-    - '-c'
-    - 'gsutil cp gs://workflow_buckt/input_data/input.txt .'
     
 #- name: 'gcr.io/cloud-builders/gcloud'
   #args:
@@ -28,21 +19,20 @@ steps:
     #- '--cluster=${_CLUSTER_NAME}'  # Correct substitution format
     - '--cluster=workflow-cluster'
     - '--region=northamerica-northeast2'
-    - '--jar=gs://workflow_buckt/target/wordcount-1.0-SNAPSHOT.jar'
-    - '--class=com.example.WordCount'
+    - '--class=org.apache.hadoop.examples.WordCount'
     - '--'
-    - 'input.txt'
+    - 'gs://workflow_bucket/input/input.txt'
     - 'gs://workflow_buckt/output_data/'
 
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'sh'
-  args:
-    - -c
-    - |
-      gcloud dataproc clusters delete '${_CLUSTER_NAME}' --region='northamerica-northeast2' --quiet
-
-#substitutions:
-  #_CLUSTER_NAME: 'workflow-cluster'  # Define the substitution here
+# Step 3: Delete the Dataproc cluster
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'dataproc'
+      - 'clusters'
+      - 'delete'
+      - 'workflow-cluster'
+      - '--region=us-central1'
+      - '--quiet'
 
 options:
   logging: CLOUD_LOGGING_ONLY
