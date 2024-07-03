@@ -30,12 +30,11 @@ def write_to_gcs(output_path, word_counts):
     blob.upload_from_string(output_data)
 
 if __name__ == "__main__":
-    bucket_name = 'workflow_buckt'
-    input_file = 'input_data/input.txt'
-    output_file = 'output_data/output.txt'
+    input_file = 'workflow_buckt/input_data/input.txt'
+    output_file = 'workflow_buckt/output_data/output.txt'
 
     # Read input data from GCS
-    input_data = read_from_gcs(bucket_name, input_file)
+    input_data = read_from_gcs(input_file)
 
     # Map function (word count)
     word_counts = [mapper(input_data)]
