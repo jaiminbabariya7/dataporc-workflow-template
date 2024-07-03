@@ -1,44 +1,72 @@
 #!/usr/bin/env python3
 import sys
 from google.cloud import storage
+from google.cloud.exceptions import NotFound
 
-def read_from_gcs(input_path):
-    """Reads data from a GCS file."""
+def read_from_gcs(bucket_name, file_name):
+    """Read content from a file in GCS."""
+    try:
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(file_name)
+        content = blob.download_as_string().decode('utf-8')
+        return content.splitlines()
+    except NotFound as e:
+        print(f"File '{file_name}' not found in bucket '{bucket_name}'. Error: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error reading from GCS bucket '{bucket_name}' file '{file_name}': {e}")
+        sys.exit(1)
+
+def write_to_gcs(bucket_name, file_name, content):
+    """Write content to a file in GCS."""
     storage_client = storage.Client()
-    bucket_name, blob_name = input_path.split('/', 3)[-1].split('/', 1)
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(blob_name)
-    content = blob.download_as_string().decode('utf-8')
-    return content
+    blob = bucket.blob(file_name)
+    blob.upload_from_string(content)
 
-def word_count_mapper(content):
-    """Performs word count."""
-    word_counts = {}
-    for line in content.splitlines():
-        words = line.strip().split()
+def mapper(lines):
+    """Mapper function for word count."""
+    word_count = {}
+    for line in lines:
+        line = line.strip()
+        words = line.split()
         for word in words:
-            word_counts[word] = word_counts.get(word, 0) + 1
-    return word_counts
+            if word in word_count:
+                word_count[word] += 1
+            else:
+                word_count[word] = 1
+    
+    # Prepare output in tab-separated format
+    output_lines = [f'{word}\t{count}' for word, count in word_count.items()]
+    return '\n'.join(output_lines)
 
-def write_to_gcs(output_path, word_counts):
-    """Writes results to a GCS file."""
-    storage_client = storage.Client()
-    bucket_name, blob_name = output_path.split('/', 3)[-1].split('/', 1)
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(blob_name)
-    output_data = '\n'.join(f'{word}\t{count}' for word, count in word_counts.items())
-    blob.upload_from_string(output_data)
+def reducer(lines):
+    """Reducer function for word count (summing up counts)."""
+    word_count = {}
+    for line in lines:
+        word, count = line.split('\t')
+        if word in word_count:
+            word_count[word] += int(count)
+        else:
+            word_count[word] = int(count)
+    
+    # Prepare output in tab-separated format
+    output_lines = [f'{word}\t{count}' for word, count in word_count.items()]
+    return '\n'.join(output_lines)
 
 if __name__ == "__main__":
-    # Specify your input and output paths
-    input_path = 'gs://workflow_buckt/input_data/input.txt'
-    output_path = 'gs://workflow_buckt/output_data/output.txt'
 
-    # Read input data from GCS
-    input_data = read_from_gcs(input_path)
+    bucket_name = 'workflow_buckt'
+    input_file = 'input_data/input.txt'
+    output_file = 'output_data/output.txt'
 
-    # Map function (word count)
-    word_counts = word_count_mapper(input_data)
+    # Read input from GCS
+    lines = read_from_gcs(bucket_name, input_file)
 
-    # Write output data to GCS
-    write_to_gcs(output_path, word_counts)
+    # Process using both mapper and reducer
+    mapper_output = mapper(lines)
+    reducer_output = reducer(mapper_output.splitlines())
+
+    # Write output to GCS
+    write_to_gcs(bucket_name, output_file, reducer_output)
