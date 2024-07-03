@@ -9,9 +9,9 @@ steps:
     args:
       - '-c'
       - |
-        INPUT_BUCKET=$INPUT_BUCKET
+        INPUT_BUCKET=$_INPUT_BUCKET
         INPUT_PATH=input.txt
-        OUTPUT_BUCKET=$OUTPUT_BUCKET
+        OUTPUT_BUCKET=$_OUTPUT_BUCKET
         OUTPUT_PATH=output.txt
         
         gcloud dataproc jobs submit pyspark dataproc-workflow-template/wordcount.py \
