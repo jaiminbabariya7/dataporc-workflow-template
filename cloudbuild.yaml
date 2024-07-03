@@ -37,7 +37,7 @@ steps:
       - '-reducer'
       - 'dataproc-workflow-template/wordcount.py'
       - '-input'
-      = 'gs://workflow_buckt/input/input.txt'
+      - 'gs://workflow_buckt/input/input.txt'
       - '-output'
       - 'gs://workflow_buckt/output_data/'
 
