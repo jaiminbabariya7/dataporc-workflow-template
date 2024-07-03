@@ -1,6 +1,6 @@
 # Dataproc Workflow Templates
 
-This repository contains Dataproc workflow templates for deploying and managing Apache Hadoop and Spark jobs on Google Cloud Platform.
+This repository contains Dataproc workflow templates for deploying and managing Apache Hadoop job on Google Cloud Platform.
 
 ## Getting Started
 
@@ -13,10 +13,11 @@ This repository contains Dataproc workflow templates for deploying and managing 
 
 ### Workflow Templates
 
-This repository includes an example workflow template for Dataproc.
+This repository includes an workflow template for Dataproc.
 
-- `example-workflow-template.yaml`: A sample workflow template that demonstrates a simple WordCount job using Hadoop on Dataproc.
+- `example-workflow-template.yaml`: A cloudbuild workflow template that will run a WordCount job using Hadoop on Dataproc.
+- `wordcount.py`: Contains logic for Wordcount script in Python.
 
 ### Cloud Build Configuration
 
-The repository is configured with a Cloud Build trigger to automatically import the workflow template into Dataproc whenever changes are pushed to the main branch.
+The repository is configured with a PubSub ad Cloud Build trigger to automatically import the workflow template into Dataproc whenever PubSub publishes the message.
