@@ -1,7 +1,7 @@
 steps:
   # Step to clone the GitHub repository
   - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://https://github.com/jaiminbabariya7/dataproc-workflow-template.git']
+    args: ['clone', 'https://github.com/jaiminbabariya7/dataproc-workflow-template.git']
 
   # Step to submit the Dataproc job
   - name: 'gcr.io/cloud-builders/gcloud'
