@@ -9,17 +9,13 @@ steps:
     args:
       - '-c'
       - |
-        INPUT_BUCKET=$_INPUT_BUCKET
-        INPUT_PATH=input.txt
-        OUTPUT_BUCKET=$_INPUT_BUCKET
-        OUTPUT_PATH=output.txt
+        INPUT_GCS_PATH=gs://workflow_buckt/input_data/input.txt
+        OUTPUT_BUCKET=gs://workflow_buckt/output_data/output.txt
         
         gcloud dataproc jobs submit pyspark dataproc-workflow-template/wordcount.py \
           --cluster=workflow-cluster \
           --region=northamerica-northeast2 \
-          -- gs://${INPUT_BUCKET}/${INPUT_PATH} gs://${OUTPUT_BUCKET}/${OUTPUT_PATH}
-    substitutions:
-    _INPUT_BUCKET: workflow_buckt
+          -- gs://${INPUT_GCS_PATH} gs://${OUTPUT_GCS_PATH}
 
 options:
   logging: CLOUD_LOGGING_ONLY
