@@ -1,42 +1,42 @@
 steps:
-    # Step-1: Clone the GitHub repository
-    - name: 'gcr.io/cloud-builders/git'
-      args: ['clone', 'https://github.com/jaiminbabariya7/dataproc-workflow-template.git'
+  # Step-1: Clone the GitHub repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/jaiminbabariya7/dataproc-workflow-template.git']
 
-    # Step-2: Create Dataproc cluster
-    #- name: 'gcr.io/cloud-builders/gcloud'
-      #args:
+  # Step-2: Create Dataproc cluster
+  #- name: 'gcr.io/cloud-builders/gcloud
+    #args:
         #- 'dataproc'
         #- 'clusters'
         #- 'create'
-        #- '${_CLUSTER_NAME}'
+        #- 'workflow-cluster'
         #- '--region'
         #- 'northamerica-northeast2'
         #- '--single-node'
 
-    # Step-3: Submit HAdoop job to the cluster
-    - name: 'gcr.io/cloud-builders/gcloud'
-      args:
-        - 'dataproc'
-        - 'jobs'
-        - 'submit'
-        - 'hadoop'
-        - '--cluster=workflow-cluster'
-        - '--region=northamerica-northeast2'
-        - '--jar=file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar'
-        - '--'
-        - '-files=dataproc-workflow-template/wordcount.py'
-        - '-mapper=python3 wordcount.py mapper'
-        - '-reducer=python3 wordcount.py reducer'
-        - '-input=gs://workflow_buckt/input/input.txt'
-        - '-output=gs://workflow_buckt/output_data/'
+  # Step-3: Submit Hadoop job to the cluster
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'dataproc'
+      - 'jobs'
+      - 'submit'
+      - 'hadoop'
+      - '--cluster=workflow-cluster'
+      - '--region=northamerica-northeast2'
+      - '--jar=file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar'
+      - '--'
+      - '-files=dataproc-workflow-template/wordcount.py'
+      - '-mapper=python3 wordcount.py mapper'
+      - '-reducer=python3 wordcount.py reducer'
+      - '-input=gs://workflow_buckt/input/input.txt'
+      - '-output=gs://workflow_buckt/output_data/'
 
-    # Step 4: Delete the Dataproc cluster
-      - name: 'gcr.io/cloud-builders/gcloud'
-        args:
-          - 'dataproc'
-          - 'clusters'
-          - 'delete'
-          - 'workflow-cluster'
-          - '--region=northamerica-northeast2'
-          - '--quiet'
+  # Step-4: Delete the Dataproc cluster
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'dataproc'
+      - 'clusters'
+      - 'delete'
+      - 'workflow-cluster'
+      - '--region=northamerica-northeast2'
+      - '--quiet'
