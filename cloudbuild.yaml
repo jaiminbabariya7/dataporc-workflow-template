@@ -33,8 +33,8 @@ steps:
       - '--jar=gs://workflow_buckt/target/hadoop-streaming.jar'
       - '--'
       - '-files=dataproc-workflow-template/wordcount.py'
-      - '-mapper=python3 wordcount.py mapper'
-      - '-reducer=python3 wordcount.py reducer'
+      - '-mapper=python3 dataproc-workflow-template/wordcount.py'
+      - '-reducer=python3 dataproc-workflow-template/wordcount.py'
       - '-input=gs://workflow_buckt/input/input.txt'
       - '-output=gs://workflow_buckt/output_data/'
 
